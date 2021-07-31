@@ -1,0 +1,1 @@
+{"version":3,"sources":["Banner.jsx"],"names":["React","Component"],"mappings":"kJAEqBA,EAAMC","file":"static/js/8.b3bc8464.chunk.js","sourcesContent":["import React from \"react\";\r\n\r\nclass Banner extends React.Component{\r\n    \r\n}"],"sourceRoot":""}

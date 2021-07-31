@@ -12,11 +12,10 @@ dotenv.config();
     port: process.env.PG_PORT
 }; */
 
-const devConfig = `postgres://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.DATABASE}`
+const devConfig = `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.DATABASE}`
 
-const proConfig = {
-    connectionString: process.env.DATABASE_URL // heroku addons
-}
+const proConfig = process.env.DATABASE_URL // heroku addons
+
 
 const pool = new Pool({
     connectionString: process.env.NODE_ENV === "production" ? proConfig : devConfig

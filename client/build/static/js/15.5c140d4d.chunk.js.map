@@ -1,0 +1,1 @@
+{"version":3,"sources":["pages/Product.jsx"],"names":["React","Component"],"mappings":"oKAEsBA,IAAMC","file":"static/js/15.5c140d4d.chunk.js","sourcesContent":["import React from 'react';\r\n\r\nclass Product extends React.Component{\r\n    render(){\r\n        return (\r\n            <div>\r\n                \r\n            </div>\r\n        );\r\n    }\r\n}"],"sourceRoot":""}
