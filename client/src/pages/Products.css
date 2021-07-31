@@ -1,0 +1,40 @@
+.ProductSmall {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    flex-direction: column;
+}
+
+.ProductSmallCol {
+    flex: 20%;
+    padding: 0;
+    margin: 0;
+}
+
+.ButtonImage {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.ButtonImage:hover {
+    opacity: 0.9;
+}
+
+.ButtonImage:focus {
+    border-top: 2px solid blue;
+}
+
+@media only screen and (max-width: 992px) {
+    .ProductSmall {
+        flex-direction: row;
+    }
+}
+
+#TitleProduct {
+    text-align: center;
+}
+
+#InfoProduct {
+    margin: 2px;
+}

@@ -1,0 +1,86 @@
+import React from 'react';
+import "./Home.css";
+import Container from "react-bootstrap/Container";
+import Image from "react-bootstrap/Image";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import MainImage from "./MainImage";
+import axios from 'axios';
+
+
+export default class Home extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            Banner:[],
+            BannerReady: false,
+            NewClothesDemo: [],
+            message:''
+        }
+    }
+    async componentDidMount(){
+        axios.get('/api/test').then(result=>this.setState({message: result.data.message}));
+        const Banner=await axios.get('/api/banner');
+        this.setState({Banner: Banner.data.map((item)=>{return item.productid}), BannerReady: true});
+    }
+    render(){
+        return (
+           <Container id="HomeMainContainer" fluid>
+            {this.state.BannerReady && <Row id="HomeMainTitleContainer" className="d-flex justify-content-center align-items-center">
+                   <Col className="HomeMainImageContainer">
+                       <MainImage pics={[this.state.Banner[0], this.state.Banner[1], this.state.Banner[2]]}/>
+                   </Col>
+                   <Col className="HomeMainImageContainer">
+                       <MainImage pics={[this.state.Banner[3], this.state.Banner[4], this.state.Banner[5]]} />
+                   </Col>
+                   <Button href="/All/1" className="btn btn-danger" id="HomeButton">SHOPPING NOW !!!</Button>
+               </Row>
+               }
+            <Row className="HomeHeadliner">
+                <h2>Mua sam theo danh muc</h2>
+            </Row>
+        
+
+            <Row className="HomeBannerContainer">
+                <Col className="HomeColBanner">
+                <a href="/All/1" className="d-flex LinkBanner">
+                <Image src="All.jpg" className="HomeBanner"/>
+                <h3 className="HomeTextOnBanner"><span>Tat ca</span></h3>
+                </a>
+                
+                </Col>
+                <Col className="HomeColBanner">
+                <a href="/Discounting" className="d-flex LinkBanner">
+                <Image src="Discounting.jpg" className="HomeBanner "/>
+                <h3 className="HomeTextOnBanner"><span>Dang khuyen mai</span></h3>
+                </a>
+                </Col>
+            </Row>
+            <Row className="HomeBannerContainer">
+            <Col className="HomeColBanner">
+                <a href="/Female" className="d-flex LinkBanner">
+                <Image src="Female.jpg" className="HomeBanner"/>
+                <h3 className="HomeTextOnBanner"><span>Do nu</span></h3>
+                </a>
+                </Col>
+                <Col className="HomeColBanner">
+                <a href="/Male" className="d-flex LinkBanner">
+                <Image src="Male.jpg" className="HomeBanner"/>
+                <h3 className="HomeTextOnBanner"><span>Do nam</span></h3>
+                </a>
+                </Col>
+            </Row>
+            <Row className="HomeHeadliner">
+                <h2>Thong tin lien lac</h2>
+                <p><span className="strongText">SDT: </span>So dien thoai</p>
+                <p><span className="strongText">Ten: </span>Ten</p>
+                <p><span className="strongText">Lazada: </span>Lazada</p>
+                <p><span className="strongText">Shoppee: </span>Shoppee</p>
+            </Row>
+            <div>{this.state.message}</div>
+           </Container>
+           
+        );
+    }
+}

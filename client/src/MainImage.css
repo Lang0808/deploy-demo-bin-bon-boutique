@@ -1,0 +1,15 @@
+.MainImage {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.shown {
+    opacity: 1;
+    transition: all 100ms linear;
+}
+
+.hidden {
+    opacity: 0.3;
+    transition: all 100ms linear 2s;
+}

@@ -1,0 +1,117 @@
+#AllMainContainer {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#AllMainBanner {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#MainBanner {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+#Banner {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#BannerDescription {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+#Slogan {
+    position: absolute;
+    font-size: 3vw;
+    left: 50vw;
+    width: 30vw;
+}
+
+#Video {
+    flex: left;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 56.25vw;
+}
+
+#MainContainerProduct {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+#FilterContainer {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    flex: 30%;
+}
+
+#ProductContainer {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    flex: 70%;
+}
+
+@media only screen and (max-width: 992px) {
+    #FilterContainer {
+        flex: 100%;
+    }
+    #ProductContainer {
+        flex: 100%;
+    }
+}
+
+.RowProduct {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.ColProduct {
+    flex: 50%;
+}
+
+.ImageProduct {
+    width: 100%;
+}
+
+.NameList {
+    text-align: center;
+    padding: 2vw;
+}
+
+.ProductName {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.Price {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.LinkToProduct {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+
+/* ----------------------------------------------------------------------- */
+
+
+/* ------------------------------------------------ */

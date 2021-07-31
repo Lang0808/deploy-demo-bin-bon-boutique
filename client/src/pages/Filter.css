@@ -1,0 +1,31 @@
+#FilterForm {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+.AgeContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    margin-right: 1vw;
+}
+
+.CheckBoxAge {
+    display: none;
+    font-size: 15px;
+    margin-left: 1vw;
+}
+
+input:checked~.CheckBoxAge {
+    display: block;
+}
+
+#Filter {
+    margin: 0;
+    padding: 0;
+    margin-left: 3vw;
+}
