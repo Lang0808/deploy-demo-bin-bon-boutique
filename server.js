@@ -23,15 +23,6 @@ app.get('/', (req, res) => {
     res.send({ message: "Hello world" });
 })
 
-const httpsOptions = {
-    cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.crt')),
-    key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key'))
-}
-
-https.createServer(httpOptions, app).listen(port, function() {
-    console.log('Serving');
-});
-
 app.listen(port, () => {
     console.log(`App listening on ${port}`)
 });
