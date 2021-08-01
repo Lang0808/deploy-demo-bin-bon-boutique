@@ -5,12 +5,13 @@ const app = require('../app');
 dotenv.config();
 
 const config = process.env.DATABASE_URL // heroku addons
+
 if (process.env.NODE_ENV === "production") {
-    config.join('/sslmode=require');
+    config = config.concat("?sslmode=require");
 }
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL
+    connectionString: config
 });
 
 
