@@ -4,7 +4,7 @@ const app = require('../app');
 
 dotenv.config();
 
-const config = process.env.DATABASE_URL // heroku addons
+var config = process.env.DATABASE_URL // heroku addons
 
 if (process.env.NODE_ENV === "production") {
     config = config.concat("?sslmode=require");
