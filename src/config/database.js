@@ -4,26 +4,19 @@ const app = require('../app');
 
 dotenv.config();
 
-/* const devConfig = {
-    user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    host: process.env.PG_HOST,
-    database: process.env.PG_DATABASE,
-    port: process.env.PG_PORT
-}; */
-
-const devConfig = `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.DATABASE}`
-
-const proConfig = process.env.DATABASE_URL // heroku addons
-
+const config = process.env.DATABASE_URL // heroku addons
+if (process.env.NODE_ENV === "production") {
+    config.join('/sslmode=require');
+}
 
 const pool = new Pool({
-    connectionString: process.env.NODE_ENV === "production" ? proConfig : devConfig
+    connectionString: process.env.DATABASE_URL
 });
 
-/*pool.on('connect', () => {
+
+pool.on('connect', () => {
     console.log("Connect successfully");
-});*/
+});
 
 module.exports = {
     query: (text, params) => pool.query(text, params),
