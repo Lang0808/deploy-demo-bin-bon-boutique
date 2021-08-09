@@ -5,7 +5,10 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "heroku-postbuild": "cd client && npm install && npm run build"
+        "heroku-postbuild": "cd client && npm install && npm run build",
+        "client": "npm run start --prefix client",
+        "server": "nodemon",
+        "dev": "concurrently \"npm run server\" \"npm run client\""
     },
     "engines": {
         "node": "14.17.3",
@@ -25,7 +28,9 @@
         "express-promise-router": "^4.1.0",
         "fs": "^0.0.1-security",
         "https": "^1.0.0",
+        "lodash.debounce": "^4.0.8",
         "per-env": "^1.0.2",
-        "pg": "^8.6.0"
+        "pg": "^8.6.0",
+        "superagent": "^6.1.0"
     }
 }

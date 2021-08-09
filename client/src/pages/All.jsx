@@ -7,8 +7,6 @@ import "./All.css";
 import Filter from "./Filter";
 import axios from "axios";
 import ProductGrid from "./ProductGrid";
-import Pagination from './Pagination';
-
 
 class All extends React.Component{
     constructor(props){
@@ -16,120 +14,62 @@ class All extends React.Component{
         this.state={
             page: this.props.match.params.page,
             product: [],
-            filterState:{}
+            loading:false,
+            prevY:0,
+            lastId: 0,
         };
-        this.handleSubmit=this.handleSubmit.bind(this);
-    }
-    async componentDidMount(){
-        const products=await axios.get(`/api/All/${this.state.page}`);
-        this.setState({
-            product: products.data
-        });
-    }
-    async handleNewPage(page){
-        this.setState({
-            page: page
-        })
-        const products=await axios.get(`/api/All/${page}`);
-        this.setState({
-            product: products.data
-        });
-    }
-    async handleSubmit(a){
-        if(a.length==0) return;
-        var agestart=0;
-        var ageend=15;
-        var discounting=false;
-        var newClothes=false;
-        var gender="";
-        if(a[0]==="male"){
-            gender="male";
-            if(a.length>1){
-                if(a[1]==="male-0-3"){
-                    agestart=0;
-                    ageend=3;
-                }
-                else if(a[1]==="male-3-6"){
-                    agestart=3;
-                    ageend=6;
-                }
-                else if(a[1]==="male-6-9"){
-                    agestart=6;
-                    ageend=9;
-                }
-                else if(a[1]==="new"){
-                    newClothes=true;
-                }
-                else if(a[1]==="discounting"){
-                    discounting=true;
-                }
-                if(a.length>2){
-                    if(a[2]==="new"){
-                        newClothes=true;
-                    }
-                    else if(a[2]==="discounting"){
-                        discounting=true;
-                    }
-                }
-                if(a.length>3){
-                    if(a[3]==="discounting") discounting=true;
-                }
-            }
-            
-        }
-        else if(a[0]=="female"){
-            gender="female";
-            if(a.length>1){
-                if(a[1]==="female-0-3"){
-                    agestart=0;
-                    ageend=3;
-                }
-                else if(a[1]==="female-3-6"){
-                    agestart=3;
-                    ageend=6;
-                }
-                else if(a[1]==="female-6-9"){
-                    agestart=6;
-                    ageend=9;
-                }
-                else if(a[1]==="new"){
-                    newClothes=true;
-                }
-                else if(a[1]==="discounting"){
-                    discounting=true;
-                }
-                if(a.length>2){
-                    if(a[2]==="new"){
-                        newClothes=true;
-                    }
-                    else if(a[2]==="discounting"){
-                        discounting=true;
-                    }
-                }
-                if(a.length>3){
-                    if(a[3]==="discounting") discounting=true;
-                }
-            }
+    } 
 
+
+    async componentDidMount(){
+        this.handleLocationSearch();
+        var options={
+            root: null,
+            rootMargin: "0px",
+            threshold: 1.0,
+        };
+        this.observer=new IntersectionObserver(
+            this.handleObserver.bind(this),
+            options
+        );
+        this.observer.observe(this.loadingRef);
+    }
+
+    handleObserver(entities, observer){
+        const y = entities[0].boundingClientRect.y;
+        if (this.state.prevY > y) {
+            this.handleLocationSearch();
         }
-        else if(a[0]=="new"){
-            gender="both";
-            newClothes=true;
-            if(a.length>1){
-                if(a[1]==="discounting"){
-                    discounting=true;
+        this.setState({ prevY: y });
+    }
+
+    async handleLocationSearch(){
+        const A=this.props.location.search.slice(1);
+        const B=A.split('&');
+        this.setState({loading: true});
+        axios.post(`/api/filter/HandleLocationSearch/${this.state.lastId}`, {B}).then(res=>{
+            var maxId=this.state.lastId;
+            for(let i=0;i<res.data.length;i++){
+                if(maxId<res.data[i].productid){
+                    maxId=res.data[i].productid;
                 }
             }
-        }
-        else if(a[0]==="discounting"){
-            discounting=true;
-        }
-        const products=await axios.get(`/api/filter/${gender}/${agestart}/${ageend}/${newClothes}/${discounting}`);
-        await this.setState({
-            product: products.data
+            this.setState({
+                product:[...this.state.product, ...res.data],
+                lastId: maxId
+            });
+            this.setState({loading: false});
         });
     }
     render(){
+        const loadingCSS = {
+            height: "100px",
+            margin: "30px",
+            color: "red",
+            fontWeight: "bold",
+            textAlign: "center"
+        };
+        const loadingTextCSS = { display: this.state.loading ? "block" : "none" };
         return (
             <div>
                 <Container id="AllMainContainer" fluid>
@@ -145,7 +85,9 @@ class All extends React.Component{
                         <Col id="FilterContainer"><Filter onSubmit={(a)=>this.handleSubmit(a)}/></Col>
                         <ProductGrid product={this.state.product}/>
                     </Row>
-                    <Pagination page={this.state.page} />
+                    <div ref={loadingRef => (this.loadingRef = loadingRef)} style={loadingCSS}>
+                        <span style={loadingTextCSS}>Loading...</span>
+                    </div>
                 </Container>
             </div>
         );

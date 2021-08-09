@@ -5,6 +5,11 @@
     padding: 0;
 }
 
+#SubmitButton {
+    height: 30px;
+    width: 50px;
+}
+
 .AgeContainer {
     display: flex;
     flex-direction: column;
