@@ -31,6 +31,7 @@
         "lodash.debounce": "^4.0.8",
         "per-env": "^1.0.2",
         "pg": "^8.6.0",
+        "puzzy-search": "^1.0.20",
         "superagent": "^6.1.0"
     }
 }

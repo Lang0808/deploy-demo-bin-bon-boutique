@@ -5,14 +5,15 @@ import Nav from 'react-bootstrap/Nav';
 import NavLink from "react-bootstrap/NavLink";
 import "./Navbar.css";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Search from './pages/Search';
 
 class NavigationBar extends React.Component{
     render(){
         return (
             <Navbar expand="lg" bg="info"  fluid>
-                <Container> 
+                <Container id="NavbarContainer"> 
                     <Navbar.Brand to ="/">BinBonBoutique</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="collapse-navbar"/>
+                    <Navbar.Toggle aria-controls="collapse-navbar"/>  
                     <Navbar.Collapse id="collapse-navbar">
                         <Nav className="me-auto">
                             <NavLink href = "/">Trang chu</NavLink>
@@ -30,11 +31,14 @@ class NavigationBar extends React.Component{
                             </NavDropdown>
                             <NavLink href="/All/1">Tat ca</NavLink>
                         </Nav>
-                    </Navbar.Collapse>     
+                    </Navbar.Collapse>
+                    
+                      
+                        
+                    
+                    
                 </Container>
             </Navbar>
-            
-        
         )
     }
 }

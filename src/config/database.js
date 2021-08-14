@@ -19,3 +19,5 @@ pool.on('connect', () => {
 module.exports = {
     query: (text, params) => pool.query(text, params),
 };
+
+// https://help.heroku.com/KTXB2SJT/how-do-i-copy-a-csv-file-into-a-postgres-table

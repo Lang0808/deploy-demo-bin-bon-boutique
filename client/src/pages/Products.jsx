@@ -68,9 +68,11 @@ class Products extends React.Component{
                         <br/>
                         <p>Số lượng còn lại: {this.state.products[0].quantity}</p>
                         <p>Giá tiền: {this.state.products[0].price}</p>
-                        <p>Miêu tả:</p>
+                        <p>Miêu tả: {this.state.products[0].description}</p>
+                        <p>Độ tuổi: {this.state.products[0].agestart}-{this.state.products[0].ageend}</p>
+                        <p>Khuyến mãi: {this.state.products[0].discount}</p>
+                        <p>Giới tính: {this.state.products[0].gender}</p>
                         <br/>
-                        {this.state.products[0].description}
                         <br/>
                     </Col>
                 </Row>
