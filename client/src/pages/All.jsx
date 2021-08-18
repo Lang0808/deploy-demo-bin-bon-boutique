@@ -94,15 +94,13 @@ class All extends React.Component{
         console.log(this.props.location);
         const loadingTextCSS = { display: this.state.loading ? "block" : "none" };
         const product=this.search();
-        //const product =this.state.product;
         return (
             <div>
                 <Container id="AllMainContainer" fluid>
                     <Container id="AllMainBanner" fluid>
                         <Row id="MainBanner" fluid><Image src="/Banner222.jpg" id="Banner"/>
-                            <h3 id="Slogan">Xung dang voi so tien cua ban</h3>
+                            <h3 id="Slogan">Xứng đáng với số tiền bạn bỏ ra</h3>
                         </Row>  
-                        {/*<iframe id="Video" fluid src="https://www.youtube.com/embed/TJwzp9QHRZw" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allow="fullscreen;"></iframe>*/}
                     </Container>
                     <br/>
                     <Container></Container>
@@ -115,7 +113,7 @@ class All extends React.Component{
                         <ProductGrid product={product}/>
                     </Row>
                     <div ref={loadingRef => (this.loadingRef = loadingRef)} style={loadingCSS}>
-                        <span style={loadingTextCSS}>Loading...</span>
+                        <span style={loadingTextCSS}>Đang tải...</span>
                     </div>
                 </Container>
             </div>

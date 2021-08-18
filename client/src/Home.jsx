@@ -38,7 +38,7 @@ export default class Home extends React.Component{
                </Row>
                }
             <Row className="HomeHeadliner">
-                <h2>Mua sam theo danh muc</h2>
+                <h2>Mua sắm theo danh mục</h2>
             </Row>
         
 
@@ -46,14 +46,14 @@ export default class Home extends React.Component{
                 <Col className="HomeColBanner">
                 <a href="/All/1" className="d-flex LinkBanner">
                 <Image src="All.jpg" className="HomeBanner"/>
-                <h3 className="HomeTextOnBanner"><span>Tat ca</span></h3>
+                <h3 className="HomeTextOnBanner"><span>Tất cả</span></h3>
                 </a>
                 
                 </Col>
                 <Col className="HomeColBanner">
                 <a href="/Discounting" className="d-flex LinkBanner">
                 <Image src="Discounting.jpg" className="HomeBanner "/>
-                <h3 className="HomeTextOnBanner"><span>Dang khuyen mai</span></h3>
+                <h3 className="HomeTextOnBanner"><span>Đang khuyến mãi</span></h3>
                 </a>
                 </Col>
             </Row>
@@ -61,24 +61,23 @@ export default class Home extends React.Component{
             <Col className="HomeColBanner">
                 <a href="/Female" className="d-flex LinkBanner">
                 <Image src="Female.jpg" className="HomeBanner"/>
-                <h3 className="HomeTextOnBanner"><span>Do nu</span></h3>
+                <h3 className="HomeTextOnBanner"><span>Đồ nữ</span></h3>
                 </a>
                 </Col>
                 <Col className="HomeColBanner">
                 <a href="/Male" className="d-flex LinkBanner">
                 <Image src="Male.jpg" className="HomeBanner"/>
-                <h3 className="HomeTextOnBanner"><span>Do nam</span></h3>
+                <h3 className="HomeTextOnBanner"><span>Đồ nam</span></h3>
                 </a>
                 </Col>
             </Row>
             <Row className="HomeHeadliner">
-                <h2>Thong tin lien lac</h2>
-                <p><span className="strongText">SDT: </span>So dien thoai</p>
-                <p><span className="strongText">Ten: </span>Ten</p>
+                <h2>Thông tin liên lạc</h2>
+                <p><span className="strongText">SDT: </span>Số điện thoại</p>
+                <p><span className="strongText">Tên: </span>Tên</p>
                 <p><span className="strongText">Lazada: </span>Lazada</p>
                 <p><span className="strongText">Shoppee: </span>Shoppee</p>
             </Row>
-            <div>{this.state.message}</div>
            </Container>
            
         );

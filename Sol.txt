@@ -1,0 +1,498 @@
+#pragma warning(disable: 4996)
+
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <set>
+#include <map>
+#include <iterator>
+#include <queue>
+#include <stack>
+#include <cstring>
+#include <iomanip>
+using namespace std;
+
+struct obj {
+    int index;
+    int Vertices;
+    int NumberOfVerticesHasOutsideEdge;
+    int GroupId;
+    obj(int i, int V, int g) {
+        index = i;
+        Vertices = V;
+        NumberOfVerticesHasOutsideEdge=0;
+        GroupId = g;
+    }
+};
+
+int n, k;
+vector<char>S;
+vector<vector<int>>G;
+const int MAXN = 1e6 + 60;
+int E[MAXN];
+bool visited[MAXN];
+int NumberOfVertices[MAXN];
+vector<obj>group;
+int NumberOfChildVertices[MAXN];
+int NumberOfSafeChild[MAXN];
+int GroupOfVertices[MAXN];
+set<int>SetFirst;
+set<int>SetSecond;
+int M, N;
+int CurSizeOfGroup;
+
+int dfsProcessGroupSizeEqualZero(int i) {
+    int ans = 0;
+    for (int j = 0; j < G[i].size(); j++) {
+        int m = NumberOfChildVertices[G[i][j]];
+        ans = ans + (n - m) * m + dfsProcessGroupSizeEqualZero(G[i][j]);
+    }
+    return ans;
+}
+
+int dfsProcessGroupSizeEqualOne(int i, obj a) {
+    if (S[i] == '#') return 0;
+    int ans = 0;
+    for (int j = 0; j < G[i].size(); j++) {
+        int m = NumberOfSafeChild[G[i][j]];
+        ans = ans + (a.Vertices - m) * m + dfsProcessGroupSizeEqualOne(G[i][j], a);
+    }
+    return ans;
+}
+
+int dfsSecondTimeProcessGroupSizeEqualOne(int i, obj a) {
+    int ans = 0;
+    if (S[i] == '#') {
+        int m = NumberOfChildVertices[i];
+        ans += ((n - m) * m);
+    }
+    for (int j = 0; j < G[i].size(); j++) {
+        ans+=dfsSecondTimeProcessGroupSizeEqualOne(G[i][j], a);
+    }
+    return ans;
+}
+
+int dfsFirstTime(int i, int parent) {
+    visited[i] = true;
+    int ans = 0;
+    NumberOfChildVertices[i] = 1;
+    NumberOfSafeChild[i] = 0;
+    int tmp = 0;
+    if (S[i] == '*' && S[parent] == '#') {
+        GroupOfVertices[i] = CurSizeOfGroup;
+        CurSizeOfGroup++;
+    }
+    else if (S[i] == '*' && S[parent] == '*') {
+        GroupOfVertices[i] = GroupOfVertices[parent];
+    }
+    else {
+        GroupOfVertices[i] = -1;
+    }
+    cout << i << " 3\n";
+    for (int j = 0; j < G[i].size(); j++) {
+        if (!visited[G[i][j]]) {
+            ans += dfsFirstTime(G[i][j], i);
+            NumberOfChildVertices[i] += NumberOfChildVertices[G[i][j]];
+            tmp += NumberOfSafeChild[G[i][j]];
+        }
+    }
+    cout << i << " 4\n";
+    if (S[i] == '*') {
+        NumberOfVertices[i] = ans + 1;
+        NumberOfSafeChild[i] = tmp + 1;
+        if (S[parent] == '#') {
+            group.push_back(obj(i, NumberOfVertices[i], GroupOfVertices[i]));
+        }
+        return ans + 1;
+    }
+    NumberOfSafeChild[i] = 0;
+    NumberOfVertices[i] = 0;
+    return 0;
+}
+
+int dfsProcessNumberOfWay(int i) {
+    if (S[i] == '#') {
+        int ans = 0;
+        for (int j = 0; j < G[i].size(); j++) {
+            int nextI = G[i][j];
+            if (SetFirst.find(GroupOfVertices[nextI])!=SetFirst.end()) {
+                if (SetSecond.size() == 0) {
+                    int NumberOfOtherGroup = SetFirst.size() - 1;
+                    ans +=( M * NumberOfOtherGroup * M);
+                }
+                else {
+                    int NumberOfSecondGroup = SetSecond.size();
+                    ans += (NumberOfSecondGroup * M * N);
+                }
+            }
+            else if (SetSecond.find(GroupOfVertices[nextI]) != SetSecond.end()) {
+                int NumberOfFirstGroup = SetFirst.size();
+                ans += (NumberOfFirstGroup * M * N);
+            }
+            ans += dfsProcessNumberOfWay(G[i][j]);
+        }
+        return ans;
+    }
+    int ans = 0;
+    for (int j = 0; j < G[i].size(); j++) {
+        int nextI = G[i][j];
+        if(S[nextI]=='#' && G[nextI].size()!=1){
+                if (SetFirst.find(GroupOfVertices[i]) != SetFirst.end()) {
+                    if (SetSecond.size() == 0) {
+                        int NumberOfOtherGroup = SetFirst.size() - 1;
+                        ans += (M * NumberOfOtherGroup * M);
+                    }
+                    else {
+                        int NumberOfSecondGroup = SetSecond.size();
+                        ans += (NumberOfSecondGroup * M * N);
+                    }
+                }
+                else if (SetSecond.find(GroupOfVertices[i]) != SetSecond.end()) {
+                    int NumberOfFirstGroup = SetFirst.size();
+                    ans += (NumberOfFirstGroup * M * N);
+                }
+                
+        }
+        ans += dfsProcessNumberOfWay(G[i][j]);
+    }
+    return ans;
+}
+
+bool cmp(obj a, obj b) {
+    return a.Vertices < b.Vertices;
+}
+
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    freopen("quarantine_input.txt", "rt", stdin);
+    //freopen("quarantine_output.txt", "wt", stdout);
+    int t;
+    cin >> t;
+    for (int tc = 1; tc <= t; tc++) {
+        
+        cin >> n >> k;
+        S.resize(n + 1);
+        G.resize(n + 1);
+        for (int i = 1; i <= n; i++) {
+            cin >> S[i];
+        }
+        S[0] = '#';
+        for (int i = 2; i <= k + 1; i++) {
+            cin >> E[i];
+        }
+        CurSizeOfGroup = 0;
+        int a, b, c;
+        cin >> a >> b >> c;
+        for (int i = k + 2; i <= n; i++) {
+            E[i] = (int)((1LL * a * E[i - 2] + 1LL * b * E[i - 1] + 1LL * c) % (i - 1)) + 1;
+        }
+        for (int i = 2; i <= n; i++) {
+            G[E[i]].push_back(i);
+        }
+        cout << 1 << '\n';
+        dfsFirstTime(1, 0);
+        cout << 2 << "\n";
+        int ans, ans2=0;
+        sort(group.begin(), group.end(), cmp);
+        if (group.size() == 0) {
+            ans = 0;
+            ans2 = dfsProcessGroupSizeEqualZero(1);
+        }
+        else if (group.size() == 1) {
+            int n = group[0].Vertices;
+            ans = n * (n - 1) / 2;
+            ans2 = dfsProcessGroupSizeEqualOne(group[0].index, group[0])+dfsSecondTimeProcessGroupSizeEqualOne(1, group[0]);
+        }
+        else {
+            M = 0, N = 0;
+            int n = group[group.size() - 1].Vertices + group[group.size() - 2].Vertices;
+            ans = n * (n - 1) / 2;
+            M = group[group.size() - 1].Vertices;
+            N= group[group.size() - 2].Vertices;
+            SetFirst.insert(group[group.size() - 1].GroupId);
+            if (M == N) {
+                for (int i = group.size() - 2; i >= 0; i--) {
+                    if (group[i].Vertices == group[i + 1].Vertices) {
+                        SetFirst.insert(group[i].GroupId);
+                    }
+                    else break;
+                }
+            }
+            
+            if (SetFirst.size() == 1) {
+                N = group[group.size() - 2].Vertices;
+                int j = group.size() - 2;
+                SetSecond.insert(group[j].GroupId);
+                for (int i = j - 1; i >= 0; i--) {
+                    if (group[i].Vertices == group[i + 1].Vertices) SetSecond.insert(group[i].GroupId);
+                    else break;
+                }
+            }
+            ans2 = dfsProcessNumberOfWay(1);
+        }
+        cout <<"Case #"<<tc<<": "<<ans << " "<<ans2<<"\n";
+        S.clear();
+        G.clear();
+        group.clear();
+        memset(visited, 0, sizeof(visited));
+        SetFirst.clear();
+        SetSecond.clear();
+    }
+}
+
+
+
+
+
+
+#pragma warning(disable: 4996)
+
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <set>
+#include <map>
+#include <iterator>
+#include <queue>
+#include <stack>
+#include <cstring>
+#include <iomanip>
+using namespace std;
+
+struct obj {
+    int index;
+    int Vertices;
+    int NumberOfVerticesHasOutsideEdge;
+    int GroupId;
+    obj(int i, int V, int g) {
+        index = i;
+        Vertices = V;
+        NumberOfVerticesHasOutsideEdge = 0;
+        GroupId = g;
+    }
+};
+
+int n, k;
+vector<char>S;
+vector<vector<int>>G;
+const int MAXN = 1e6 + 60;
+int E[MAXN];
+bool visited[MAXN];
+int NumberOfVertices[MAXN];
+vector<obj>group;
+int NumberOfChildVertices[MAXN];
+int NumberOfSafeChild[MAXN];
+int GroupOfVertices[MAXN];
+set<int>SetFirst;
+set<int>SetSecond;
+int M, N;
+int CurSizeOfGroup;
+
+int dfsProcessGroupSizeEqualZero(int i) {
+    int ans = 0;
+    for (int j = 0; j < G[i].size(); j++) {
+        int m = NumberOfChildVertices[G[i][j]];
+        ans = ans + (n - m) * m + dfsProcessGroupSizeEqualZero(G[i][j]);
+    }
+    return ans;
+}
+
+int dfsProcessGroupSizeEqualOne(int i, obj a) {
+    if (S[i] == '#') return 0;
+    int ans = 0;
+    for (int j = 0; j < G[i].size(); j++) {
+        int m = NumberOfSafeChild[G[i][j]];
+        ans = ans + (a.Vertices - m) * m + dfsProcessGroupSizeEqualOne(G[i][j], a);
+    }
+    return ans;
+}
+
+int dfsSecondTimeProcessGroupSizeEqualOne(int i, obj a) {
+    int ans = 0;
+    if (S[i] == '#') {
+        int m = NumberOfChildVertices[i];
+        ans += ((n - m) * m);
+    }
+    for (int j = 0; j < G[i].size(); j++) {
+        ans += dfsSecondTimeProcessGroupSizeEqualOne(G[i][j], a);
+    }
+    return ans;
+}
+
+int dfsFirstTime(int i, int parent) {
+    visited[i] = true;
+    int ans = 0;
+    NumberOfChildVertices[i] = 1;
+    NumberOfSafeChild[i] = 0;
+    int tmp = 0;
+    char pa;
+    if (parent == -1) {
+        pa = '#';
+    }
+    else pa = S[parent];
+    if (S[i] == '*' && pa == '#') {
+        GroupOfVertices[i] = CurSizeOfGroup;
+        CurSizeOfGroup++;
+    }
+    else if (S[i] == '*' && pa == '*') {
+        GroupOfVertices[i] = GroupOfVertices[parent];
+    }
+    else {
+        GroupOfVertices[i] = -1;
+    }
+    for (int j = 0; j < G[i].size(); j++) {
+        if (!visited[G[i][j]]) {
+            ans += dfsFirstTime(G[i][j], i);
+            NumberOfChildVertices[i] += NumberOfChildVertices[G[i][j]];
+            tmp += NumberOfSafeChild[G[i][j]];
+        }
+    }
+    if (S[i] == '*') {
+        NumberOfVertices[i] = ans + 1;
+        NumberOfSafeChild[i] = tmp + 1;
+        if (S[parent] == '#') {
+            group.push_back(obj(i, NumberOfVertices[i], GroupOfVertices[i]));
+        }
+        return ans + 1;
+    }
+    NumberOfSafeChild[i] = 0;
+    NumberOfVertices[i] = 0;
+    return 0;
+}
+
+int dfsProcessNumberOfWay(int i) {
+    if (S[i] == '#') {
+        int ans = 0;
+        for (int j = 0; j < G[i].size(); j++) {
+            int nextI = G[i][j];
+            if (SetFirst.find(GroupOfVertices[nextI]) != SetFirst.end()) {
+                if (SetSecond.size() == 0) {
+                    int NumberOfOtherGroup = SetFirst.size() - 1;
+                    ans += (M * NumberOfOtherGroup * M);
+                }
+                else {
+                    int NumberOfSecondGroup = SetSecond.size();
+                    ans += (NumberOfSecondGroup * M * N);
+                }
+            }
+            else if (SetSecond.find(GroupOfVertices[nextI]) != SetSecond.end()) {
+                int NumberOfFirstGroup = SetFirst.size();
+                ans += (NumberOfFirstGroup * M * N);
+            }
+            ans += dfsProcessNumberOfWay(G[i][j]);
+        }
+        return ans;
+    }
+    int ans = 0;
+    for (int j = 0; j < G[i].size(); j++) {
+        int nextI = G[i][j];
+        if (S[nextI] == '#' && G[nextI].size() != 1) {
+            if (SetFirst.find(GroupOfVertices[i]) != SetFirst.end()) {
+                if (SetSecond.size() == 0) {
+                    int NumberOfOtherGroup = SetFirst.size() - 1;
+                    ans += (M * NumberOfOtherGroup * M);
+                }
+                else {
+                    int NumberOfSecondGroup = SetSecond.size();
+                    ans += (NumberOfSecondGroup * M * N);
+                }
+            }
+            else if (SetSecond.find(GroupOfVertices[i]) != SetSecond.end()) {
+                int NumberOfFirstGroup = SetFirst.size();
+                ans += (NumberOfFirstGroup * M * N);
+            }
+
+        }
+        ans += dfsProcessNumberOfWay(G[i][j]);
+    }
+    return ans;
+}
+
+bool cmp(obj a, obj b) {
+    return a.Vertices < b.Vertices;
+}
+
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    freopen("quarantine_input.txt", "rt", stdin);
+    //freopen("quarantine_output.txt", "wt", stdout);
+    int t;
+    cin >> t;
+    for (int tc = 1; tc <= t; tc++) {
+        cin >> n >> k;
+        S.resize(n);
+        G.resize(n);
+        for (int i = 0; i < n; i++) {
+            cin >> S[i];
+        }
+        S[0] = '#';
+        for (int i = 1; i <= k; i++) {
+            cin >> E[i];
+            E[i]--;
+        }
+        CurSizeOfGroup = 0;
+        int a, b, c;
+        cin >> a >> b >> c;
+        for (int i = k + 1; i < n; i++) {
+            E[i] = (int)((1LL * a * E[i - 2] + 1LL * b * E[i - 1] + 1LL * c) % (i - 1)) + 1;
+         
+        }
+        for (int i = 1; i < n; i++) {
+            G[E[i]].push_back(i);
+        }
+        //cout << 1 << '\n';
+        dfsFirstTime(0, -1);
+        //cout << 2 << "\n";
+        int ans, ans2 = 0;
+        sort(group.begin(), group.end(), cmp);
+        if (group.size() == 0) {
+            ans = 0;
+            ans2 = dfsProcessGroupSizeEqualZero(0);
+        }
+        else if (group.size() == 1) {
+            int n = group[0].Vertices;
+            ans = n * (n - 1) / 2;
+            ans2 = dfsProcessGroupSizeEqualOne(group[0].index, group[0]) + dfsSecondTimeProcessGroupSizeEqualOne(0, group[0]);
+        }
+        else {
+            M = 0, N = 0;
+            int n = group[group.size() - 1].Vertices + group[group.size() - 2].Vertices;
+            ans = n * (n - 1) / 2;
+            M = group[group.size() - 1].Vertices;
+            N = group[group.size() - 2].Vertices;
+            SetFirst.insert(group[group.size() - 1].GroupId);
+            if (M == N) {
+                for (int i = group.size() - 2; i >= 0; i--) {
+                    if (group[i].Vertices == group[i + 1].Vertices) {
+                        SetFirst.insert(group[i].GroupId);
+                    }
+                    else break;
+                }
+            }
+
+            if (SetFirst.size() == 1) {
+                N = group[group.size() - 2].Vertices;
+                int j = group.size() - 2;
+                SetSecond.insert(group[j].GroupId);
+                for (int i = j - 1; i >= 0; i--) {
+                    if (group[i].Vertices == group[i + 1].Vertices) SetSecond.insert(group[i].GroupId);
+                    else break;
+                }
+            }
+            ans2 = dfsProcessNumberOfWay(0);
+        }
+        cout << "Case #" << tc << ": " << ans << " " << ans2 << "\n";
+        S.clear();
+        G.clear();
+        group.clear();
+        memset(visited, 0, sizeof(visited));
+        SetFirst.clear();
+        SetSecond.clear();
+    }
+}

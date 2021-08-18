@@ -45,7 +45,7 @@ class ProductGrid extends React.Component{
         }
         return (
             <Col id="ProductContainer">
-                <h3 className="NameList">Danh sach san pham</h3>
+                <h3 className="NameList">Danh sách sản phẩm</h3>
                 {obj}
             </Col>
         )

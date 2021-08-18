@@ -1,10 +1,9 @@
-import React, {Suspense} from "react";
+import React from "react";
 import axios from "axios";
 import Image from "react-bootstrap/Image";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./Products.css";
-import Button from "react-bootstrap/Button";
 
 class Products extends React.Component{
     constructor(props){
@@ -57,9 +56,7 @@ class Products extends React.Component{
             <div>
                {this.state.ready && 
                <div>
-                 <h1>Trang bieu dien san pham {this.state.productId}
-                 </h1>
-                
+                <br/>
                 <Row>
                     <Col lg={5}>{this.state.images[this.state.curImg]}</Col>
                     <Col lg={1}>{obj}</Col>

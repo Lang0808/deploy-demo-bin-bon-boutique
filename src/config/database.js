@@ -21,3 +21,6 @@ module.exports = {
 };
 
 // https://help.heroku.com/KTXB2SJT/how-do-i-copy-a-csv-file-into-a-postgres-table
+// B1: Chuyen file csv qua dang comma delimited UTF8
+// B2: Qua notepad, chuyen file thanh UTF8
+// B3: stack overflow
