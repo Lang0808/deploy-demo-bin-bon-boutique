@@ -18,18 +18,17 @@ class NavigationBar extends React.Component{
                             <NavLink href = "/">Trang chủ</NavLink>
                             <NavDropdown title="Đồ nam" class="Dropdown">
                                 <NavDropdown.Header>Chọn độ tuổi </NavDropdown.Header>
-                                <NavDropdown.Item><NavLink href="/All/1">0-3</NavLink></NavDropdown.Item>
-                                <NavDropdown.Item>3-6</NavDropdown.Item>
-                                <NavDropdown.Item>6-12</NavDropdown.Item>
+                                <NavLink href="All/1?gender=male&age=0-3">0-3</NavLink>
+                                <NavLink href="All/1?gender=male&age=3-6">3-6</NavLink>
+                                <NavLink href="All/1?gender=male&age=6-9">6-9</NavLink>
                             </NavDropdown>
                             <NavDropdown title="Đồ nữ" class="Dropdown">
                                 <NavDropdown.Header>Chọn độ tuổi: </NavDropdown.Header>
-                                <NavDropdown.Item>0-3</NavDropdown.Item>
-                                <NavDropdown.Item>3-6</NavDropdown.Item>
-                                <NavDropdown.Item>6-12</NavDropdown.Item>
+                                <NavLink href="All/1?gender=female&age=0-3">0-3</NavLink>
+                                <NavLink href="All/1?gender=female&age=3-6">3-6</NavLink>
+                                <NavLink href="All/1?gender=female&age=6-9">6-9</NavLink>
                             </NavDropdown>
                             <NavLink href="/All/1">Tất cả</NavLink>
-                            {/*<NavLink href="/All/1?gender=male">Tất cả</NavLink>*/}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

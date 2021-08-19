@@ -8,7 +8,7 @@ const config = process.env.DATABASE_URL // heroku addons
 
 const pool = new Pool({
     connectionString: config,
-    ssl: { rejectUnauthorized: false }
+    /*ssl: { rejectUnauthorized: false }*/ // Khi deploy nho uncomment
 });
 
 

@@ -18,9 +18,7 @@ class Filter extends React.Component{
         this.handleChange=this.handleChange.bind(this);
     }
     componentDidMount(){
-        console.log(this.props.filterQuery);
         const temp=this.props.filterQuery.slice(1);
-        console.log(temp);
         const B=temp.split("&");
         console.log(B);
         var gender='';

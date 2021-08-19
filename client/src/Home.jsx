@@ -16,11 +16,9 @@ export default class Home extends React.Component{
             Banner:[],
             BannerReady: false,
             NewClothesDemo: [],
-            message:''
         }
     }
     async componentDidMount(){
-        axios.get('/api/test').then(result=>this.setState({message: result.data.message}));
         const Banner=await axios.get('/api/banner');
         this.setState({Banner: Banner.data.map((item)=>{return item.productid}), BannerReady: true});
     }
@@ -51,7 +49,7 @@ export default class Home extends React.Component{
                 
                 </Col>
                 <Col className="HomeColBanner">
-                <a href="/Discounting" className="d-flex LinkBanner">
+                <a href="/All/1?discounting=true" className="d-flex LinkBanner">
                 <Image src="Discounting.jpg" className="HomeBanner "/>
                 <h3 className="HomeTextOnBanner"><span>Đang khuyến mãi</span></h3>
                 </a>
@@ -59,13 +57,13 @@ export default class Home extends React.Component{
             </Row>
             <Row className="HomeBannerContainer">
             <Col className="HomeColBanner">
-                <a href="/Female" className="d-flex LinkBanner">
+                <a href="/All/1?gender=female" className="d-flex LinkBanner">
                 <Image src="Female.jpg" className="HomeBanner"/>
                 <h3 className="HomeTextOnBanner"><span>Đồ nữ</span></h3>
                 </a>
                 </Col>
                 <Col className="HomeColBanner">
-                <a href="/Male" className="d-flex LinkBanner">
+                <a href="/All/1?gender=male" className="d-flex LinkBanner">
                 <Image src="Male.jpg" className="HomeBanner"/>
                 <h3 className="HomeTextOnBanner"><span>Đồ nam</span></h3>
                 </a>

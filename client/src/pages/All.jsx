@@ -26,7 +26,6 @@ class All extends React.Component{
         this.setState({
             query: queryValue,
         });
-        console.log(queryValue);
     }
     search(){
         var product =this.state.product;
@@ -90,8 +89,6 @@ class All extends React.Component{
             fontWeight: "bold",
             textAlign: "center"
         };
-        console.log(this.props.match);
-        console.log(this.props.location);
         const loadingTextCSS = { display: this.state.loading ? "block" : "none" };
         const product=this.search();
         return (
@@ -103,7 +100,6 @@ class All extends React.Component{
                         </Row>  
                     </Container>
                     <br/>
-                    <Container></Container>
                     <Row id="MainContainerProduct" fluid>
                         <Col id="FilterContainer">
                             <Filter filterQuery={this.props.location.search}/>
