@@ -31,7 +31,7 @@ class TestFadeInOutImage extends React.Component{
     }
     handleTransitionEnd(){
         console.log(this.state.lop);
-        if(this.state.lop=='hidden'){
+        if(this.state.lop==='hidden'){
             this.changeImage();
             this.fadeIn();
         }

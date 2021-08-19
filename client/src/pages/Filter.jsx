@@ -55,24 +55,24 @@ class Filter extends React.Component{
     handleChange(event){
         var Regex=/\d-\d/;
         var tmp;
-        if(event.target.value=="male"){
+        if(event.target.value==="male"){
             this.setState({
                 gender: this.state.gender==='male'?'':'male',
                 Age: '',
             });
         }
-        else if(event.target.value=="female"){
+        else if(event.target.value==="female"){
             this.setState({
                 gender: this.state.gender==='female'?'':'female',
                 Age:'',
             })
         }
-        else if(event.target.name=="newClothes"){
+        else if(event.target.name==="newClothes"){
             this.setState({
                 new: !this.state.new,
             })
         }
-        else if(event.target.name=="discounting"){
+        else if(event.target.name==="discounting"){
             this.setState({
                 discounting: !this.state.discounting,
             })

@@ -3,8 +3,7 @@ import React, {Suspense} from "react";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import NavigationBar from "./Navbar";
 import 'bootstrap/dist/css/bootstrap.min.css';

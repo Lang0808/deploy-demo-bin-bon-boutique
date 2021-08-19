@@ -2,7 +2,7 @@ var img_tracker = "1";
 var pic = document.getElementById("image");
 
 function changeImg() {
-    if (img_tracker == "1") {
+    if (img_tracker === "1") {
         pic.src = "1.jpg";
         img_tracker = "2";
     } else {
